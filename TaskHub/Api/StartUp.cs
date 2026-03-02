@@ -1,3 +1,4 @@
+using Api.Middlewares;
 using Api.UseCases.Users;
 using Api.UseCases.Users.Interfaces;
 using Dal;
@@ -79,6 +80,8 @@ public sealed class Startup
             });
         }
 
+        app.UseMiddleware<RequestTime>();
+        app.UseMiddleware<StudentData>();
         app.UseRouting();
 
         app.UseEndpoints(endpoints =>
