@@ -1,3 +1,4 @@
+using Api.Hw.DI_task;
 using Api.Middlewares;
 using Api.UseCases.Users;
 using Api.UseCases.Users.Interfaces;
@@ -37,7 +38,18 @@ public sealed class Startup
         services.AddControllers();
         services.AddDal();
         services.AddLogic();
-        
+
+        //-------------
+        services.AddTransient<ITransient1, FirstServiceT>();
+        services.AddTransient<ITransient2, SecondServiceT>();
+
+        services.AddScoped<IScoped1, FirstServiceSc>();
+        services.AddScoped<IScoped2, SecondServiceSc>();
+
+        services.AddSingleton<ISingleton1, FirstServiceS>();
+        services.AddSingleton<ISingleton2, SecondServiceS>();
+        //-------------
+
         services.AddScoped<IManageUserUseCase, ManageUserUseCase>();
         
         services.AddCors(options =>
@@ -62,6 +74,7 @@ public sealed class Startup
                 Version = "v1"
             });
         });
+
     }
 
     /// <summary>
@@ -80,13 +93,15 @@ public sealed class Startup
             });
         }
 
-        app.UseMiddleware<RequestTime>();
-        app.UseMiddleware<StudentData>();
+        app.UseMiddleware<RequestTime>(); //
+        app.UseMiddleware<StudentData>(); //
         app.UseRouting();
 
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers();
         });
+
+
     }
 }
