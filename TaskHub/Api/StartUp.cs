@@ -93,8 +93,8 @@ public sealed class Startup
             });
         }
 
-        app.UseMiddleware<RequestTime>(); //
-        app.UseMiddleware<StudentData>(); //
+        //app.UseMiddleware<RequestTime>(); // middleware из Дз1
+        //app.UseMiddleware<StudentData>(); // middleware из Дз1
         app.UseRouting();
 
         app.UseEndpoints(endpoints =>
