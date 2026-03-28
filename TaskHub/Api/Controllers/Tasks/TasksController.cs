@@ -1,5 +1,6 @@
 ﻿using Api.Controllers.Tasks.Request;
 using Api.Controllers.Tasks.Response;
+using Api.Hw.Filters_task;
 using Api.UseCases.Tasks.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,6 +8,8 @@ namespace Api.Controllers.Tasks
 {
     [ApiController]
     [Route("tasks")]
+    [StudentInfoHeadersFilter]
+    [RequestLoggingFilter]
     public class TasksController : ControllerBase
     {
         private readonly ITaskUseCase _taskUseCase;
@@ -17,6 +20,7 @@ namespace Api.Controllers.Tasks
         }
 
         [HttpPost]
+        [ValidateCreateTaskRequestFilter]
         public async Task<ActionResult<TaskResponse>> CreateTaskAsync([FromBody] CreateTaskRequest request, CancellationToken token)
         {
             var resp = await _taskUseCase.CreateTaskUseCase(request.TaskTitle, request.UserId, token);
@@ -30,8 +34,8 @@ namespace Api.Controllers.Tasks
             return Ok(resp);
         }
 
-        [HttpGet("{id:guid}")]
-        public async Task<ActionResult<TaskResponse>> GetTaskByID([FromRoute] Guid id, CancellationToken token)
+        [HttpGet("{id:guid}")]//[HttpGet("{id}")]
+        public async Task<ActionResult<TaskResponse>> GetTaskByID([FromRoute] Guid id, CancellationToken token) //[FromRouteTaskId]
         {
             var resp = await _taskUseCase.GetTaskUseCase(id, token);
 
@@ -42,6 +46,7 @@ namespace Api.Controllers.Tasks
         }
 
         [HttpPut("{id:guid}/title")]
+        [ValidateSetTaskTitleRequestFilter]
         public async Task<IActionResult> UpdateTaskName([FromBody] SetTaskTitleRequest request, [FromRoute] Guid id, CancellationToken token)
         {
             var resp = await _taskUseCase.SetTaskTitleUseCase(request.Title, id, token);
