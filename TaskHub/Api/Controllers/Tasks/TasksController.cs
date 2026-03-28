@@ -1,5 +1,6 @@
 ﻿using Api.Controllers.Tasks.Request;
 using Api.Controllers.Tasks.Response;
+using Api.Hw.ModelBinding_task;
 using Api.UseCases.Tasks.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,8 +31,8 @@ namespace Api.Controllers.Tasks
             return Ok(resp);
         }
 
-        [HttpGet("{id:guid}")]
-        public async Task<ActionResult<TaskResponse>> GetTaskByID([FromRoute] Guid id, CancellationToken token)
+        [HttpGet("{id}")] //[HttpGet("{id:guid}")]
+        public async Task<ActionResult<TaskResponse>> GetTaskByID([FromRouteTaskId] Guid id, CancellationToken token)
         {
             var resp = await _taskUseCase.GetTaskUseCase(id, token);
 
