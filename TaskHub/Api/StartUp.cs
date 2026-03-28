@@ -1,5 +1,7 @@
 using Api.Hw.DI_task;
 using Api.Middlewares;
+using Api.UseCases.Tasks;
+using Api.UseCases.Tasks.Interfaces;
 using Api.UseCases.Users;
 using Api.UseCases.Users.Interfaces;
 using Dal;
@@ -51,6 +53,7 @@ public sealed class Startup
         //-------------
 
         services.AddScoped<IManageUserUseCase, ManageUserUseCase>();
+        services.AddScoped<ITaskUseCase, TaskUseCase>();
         
         services.AddCors(options =>
         {
